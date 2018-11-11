@@ -38,7 +38,7 @@ abstract sig Request{
 sig SingleRequest extends Request{
 	recipient: one IndividualUser,
 }
-//The number of people in a GroupRequest must be grater than 1000 to be anonymous variable equal to True
+//The number of people in a GroupRequest must be greater or equal than 4 to be anonymous variable equal to True
 sig GroupRequest extends Request{
 	anonymous: one Bool,
 	numberPeople: one Int
@@ -139,7 +139,7 @@ assert availableData{
 	all u: CompanyUser | (all r: Request | all d: Data | ( r in u.sentRequests and d in r.data and r.status=Accepted) implies u.availableData=d)
 }
 
-//A group request must be refused if the number of people investigated is less than 4 (in the real world if the number is less than 1000)
+//A group request must be refused if the number of people investigated is less than 4
 assert anonymityGroupRequest{
 	all r: GroupRequest | (r.numberPeople < 4 implies r.status=Refused) and (r.status=Refused implies r.numberPeople < 4)
 }
